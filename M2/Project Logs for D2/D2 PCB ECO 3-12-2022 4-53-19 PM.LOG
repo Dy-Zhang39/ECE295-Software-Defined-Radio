@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=TXEN Pin=R1-1
+Removed Pin From Net: NetName=+5V Pin=R1-2
+Added Pin To Net: NetName=+5V Pin=R1-1
+Added Pin To Net: NetName=TXEN Pin=R1-2
