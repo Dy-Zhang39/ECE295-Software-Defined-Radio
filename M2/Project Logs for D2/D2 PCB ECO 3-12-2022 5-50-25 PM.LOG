@@ -1,0 +1,7 @@
+Removed Pin From Net: NetName=ANT Pin=K1-4
+Removed Pin From Net: NetName=RX_SIG Pin=K1-5
+Removed Pin From Net: NetName=PA_OUT Pin=K1-6
+Removed Pin From Net: NetName=+5V Pin=K1-7
+Removed Pin From Net: NetName=NetD1_1 Pin=K1-8
+Removed Member From Class: ClassName=D2 Member=K1
+Added Room: Name=D2
