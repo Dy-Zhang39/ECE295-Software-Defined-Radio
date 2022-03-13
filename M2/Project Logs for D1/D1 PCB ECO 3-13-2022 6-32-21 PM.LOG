@@ -1,0 +1,7 @@
+Change Component Designator: OldDesignator=KEYPAD NewDesignator=J_KEYPAD
+Change Component Designator: OldDesignator=R5 NewDesignator=R4
+Change Component Designator: OldDesignator=RK1 NewDesignator=R5
+Change Component Designator: OldDesignator=RK2 NewDesignator=R6
+Change Component Designator: OldDesignator=RK3 NewDesignator=R7
+Change Component Designator: OldDesignator=RK4 NewDesignator=R8
+Added Room: Name=D1
