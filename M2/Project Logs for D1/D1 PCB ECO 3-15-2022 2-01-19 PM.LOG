@@ -1,0 +1,9 @@
+Change Component Designator: OldDesignator=J_TEST_new NewDesignator=J_TEST
+Added Pin To Net: NetName=/TXEN Pin=J_TEST-1
+Added Pin To Net: NetName=SCL Pin=J_TEST-2
+Added Pin To Net: NetName=SDA Pin=J_TEST-3
+Added Pin To Net: NetName=TXD Pin=J_TEST-4
+Added Pin To Net: NetName=RXD Pin=J_TEST-5
+Added Pin To Net: NetName=GND Pin=J_TEST-6
+Added Member To Class: ClassName=D1 Member=Component J_TEST Header 6
+Added Room: Name=D1
