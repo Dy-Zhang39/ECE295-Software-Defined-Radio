@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
-PCB File : W:\ECE295\ECE295Repo\ECE295\M2\D1.PcbDoc
+PCB File : W:\ECE295\ECE295Repo\ECE295\M2\D2.PcbDoc
 Date     : 3/18/2022
-Time     : 12:00:50 PM
+Time     : 12:02:06 PM
 
 Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
 Rule Violations :0
@@ -45,4 +45,4 @@ Rule Violations :0
 
 Violations Detected : 0
 Waived Violations : 0
-Time Elapsed        : 00:00:01
+Time Elapsed        : 00:00:02
