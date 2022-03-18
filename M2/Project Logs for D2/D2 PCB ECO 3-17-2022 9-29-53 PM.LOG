@@ -1,0 +1,4 @@
+Change Component Designator: OldDesignator=D_Power NewDesignator=D_PWR
+Change Component Designator: OldDesignator=D_TXEN NewDesignator=D_TX
+Change Net Name : Old Net Name=NetD_Power_2 New Net Name=NetD_PWR_2
+Change Net Name : Old Net Name=NetD_TXEN_2 New Net Name=NetD_TX_2

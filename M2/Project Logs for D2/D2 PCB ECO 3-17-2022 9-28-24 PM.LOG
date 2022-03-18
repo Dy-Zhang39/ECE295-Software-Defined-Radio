@@ -1,0 +1,5 @@
+Change Component Designator: OldDesignator=D2 NewDesignator=D_Power
+Change Component Designator: OldDesignator=D3 NewDesignator=D_TXEN
+Change Net Name : Old Net Name=NetD2_2 New Net Name=NetD_Power_2
+Change Net Name : Old Net Name=NetD3_2 New Net Name=NetD_TXEN_2
+Added Room: Name=D2
