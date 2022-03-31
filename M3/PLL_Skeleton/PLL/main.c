@@ -38,7 +38,8 @@ void si5351aSetFrequency(uint32_t frequency)
 	denom = 1048575;				// For simplicity we set the denominator to the maximum 1048575
 
 									// Set up PLL A with the calculated multiplication ratio
-	setupPLL(SI5351_PLL_A, mult, num, denom);
+	//setupPLL(SI5351_PLL_A, mult, num, denom);
+	setupPLLInt(SI5351_PLL_A, 28) //testing number, hard coded
 									// Set up MultiSynth divider 0, with the calculated divider.
 									// The final R division stage can divide by a power of two, from 1..128.
 									// reprented by constants SI_R_DIV1 to SI_R_DIV128 (see si5351a.h header file)
@@ -53,5 +54,5 @@ void si5351aSetFrequency(uint32_t frequency)
 
 									// Finally switch on the CLK0 output (0x4F)
 									// and set the MultiSynth0 input to be PLL A
-	write8(SI_CLK0_CONTROL, 0x4F | SI_CLK_SRC_PLL_A);
+	write8(SI5351_REGISTER_16_CLK0_CONTROL, 0x4F | SI_CLK_SRC_PLL_A); // 01001111
 }
