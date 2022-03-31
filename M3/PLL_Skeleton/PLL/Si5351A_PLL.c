@@ -47,7 +47,12 @@ static void read8(uint8_t *reg, uint8_t *value)
 /**************************************************************************/
 err_t Si5351A_setup(void) {
 
-  // Initialize I2C:
+	/* Initialise I2C */
+  if (i2c_dev)
+    delete i2c_dev;
+  i2c_dev = new Adafruit_I2CDevice(SI5351_ADDRESS, theWire);
+  if (!i2c_dev->begin())
+    return ERROR_I2C_DEVICENOTFOUND;
 
 	/* Disable all outputs setting CLKx_DIS high */
   ASSERT_STATUS(write8(SI5351_REGISTER_3_OUTPUT_ENABLE_CONTROL, 0xFF));
@@ -62,7 +67,9 @@ err_t Si5351A_setup(void) {
   ASSERT_STATUS(write8(SI5351_REGISTER_22_CLK6_CONTROL, 0x80));
   ASSERT_STATUS(write8(SI5351_REGISTER_23_CLK7_CONTROL, 0x80));
 
-	// Set load capacitance:
+	/* Set the load capacitance for the XTAL */
+  ASSERT_STATUS(write8(SI5351_REGISTER_183_CRYSTAL_INTERNAL_LOAD_CAPACITANCE,
+                       m_si5351Config.crystalLoad));
 
   /* Reset the PLL config fields just in case we call init again */
   Si5351_plla_configured = false;
@@ -376,7 +383,7 @@ err_t setupMultisynth(uint8_t output, si5351PLL_t pllSource,
     @brief  Enables or disables all clock outputs
 */
 /**************************************************************************/
-err_t enableOutputs(bool enabled) {  
+err_t enableOutputs(bool enabled) {
 	/* Make sure we've called init first */
   ASSERT(Si5351_initialised, ERROR_DEVICENOTINITIALISED);
 
