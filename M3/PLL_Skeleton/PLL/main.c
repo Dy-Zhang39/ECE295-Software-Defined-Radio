@@ -54,5 +54,5 @@ void si5351aSetFrequency(uint32_t frequency)
 
 									// Finally switch on the CLK0 output (0x4F)
 									// and set the MultiSynth0 input to be PLL A
-	write8(SI5351_REGISTER_16_CLK0_CONTROL, 0x4F | SI_CLK_SRC_PLL_A); // 01001111
+	write8(SI5351_REGISTER_16_CLK0_CONTROL, 0x4F | SI5351_PLL_A); // 01001111
 }
