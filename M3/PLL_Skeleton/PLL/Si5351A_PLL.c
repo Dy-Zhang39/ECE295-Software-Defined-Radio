@@ -7,7 +7,7 @@
  */
 
 
-#include "./Si5351A_PLL.h"
+#include "Si5351A_PLL.h"
 
 // volatile global variables for the PLLs
 volatile bool Si5351_initialised = false;
