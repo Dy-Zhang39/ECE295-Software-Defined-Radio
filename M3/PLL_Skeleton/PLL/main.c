@@ -1,3 +1,5 @@
+// Register Map: https://www.skyworksinc.com/-/media/Skyworks/SL/documents/public/application-notes/AN619.pdf 
+
 #include "si5351a.h"
 
 int main(void)
@@ -11,12 +13,11 @@ int main(void)
 
 #define CHANNEL_0 0
 
-
 void si5351aSetFrequency(uint32_t frequency)
 {
 	uint32_t pllFreq;
 	uint32_t xtalFreq = XTAL_FREQ;
-	uint32_t l;
+	uint32_t l; 
 	float f;
 	uint8_t mult;
 	uint32_t num;
