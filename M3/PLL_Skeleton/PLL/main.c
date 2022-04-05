@@ -46,7 +46,8 @@ void si5351aSetFrequency(uint32_t frequency)
 									// reprented by constants SI_R_DIV1 to SI_R_DIV128 (see si5351a.h header file)
 									// If you want to output frequencies below 1MHz, you have to use the
 									// final R division stage
-	setupMultisynth(CHANNEL_0, divider, SI_R_DIV_1);
+	//setupMultisynth(CHANNEL_0, SI5351_PLL_A, num, denom);
+	setupMultisynthInt(CHANNEL_0, SI5351_PLL_A, 50)
 									// Reset the PLL. This causes a glitch in the output. For small changes to
 									// the parameters, you don't need to reset the PLL, and there is no glitch
 
