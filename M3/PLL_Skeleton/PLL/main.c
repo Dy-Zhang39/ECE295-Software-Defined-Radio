@@ -16,7 +16,7 @@ int main(void)
 void si5351aSetFrequency(uint32_t frequency)
 {
 	uint32_t pllFreq;
-	uint32_t xtalFreq = XTAL_FREQ;
+	uint32_t xtalFreq = SI5351_XTAL_FREQ;
 	uint32_t l; 
 	float f;
 	uint8_t mult;
@@ -40,14 +40,14 @@ void si5351aSetFrequency(uint32_t frequency)
 
 									// Set up PLL A with the calculated multiplication ratio
 	//setupPLL(SI5351_PLL_A, mult, num, denom);
-	setupPLLInt(SI5351_PLL_A, 28) //testing number, hard coded
+	setupPLLInt(SI5351_PLL_A, 28); //testing number, hard coded
 									// Set up MultiSynth divider 0, with the calculated divider.
 									// The final R division stage can divide by a power of two, from 1..128.
 									// reprented by constants SI_R_DIV1 to SI_R_DIV128 (see si5351a.h header file)
 									// If you want to output frequencies below 1MHz, you have to use the
 									// final R division stage
 	//setupMultisynth(CHANNEL_0, SI5351_PLL_A, num, denom);
-	setupMultisynthInt(CHANNEL_0, SI5351_PLL_A, 50)
+	setupMultisynthInt(CHANNEL_0, SI5351_PLL_A, 50);
 									// Reset the PLL. This causes a glitch in the output. For small changes to
 									// the parameters, you don't need to reset the PLL, and there is no glitch
 
