@@ -1,6 +1,7 @@
 // Register Map: https://www.skyworksinc.com/-/media/Skyworks/SL/documents/public/application-notes/AN619.pdf 
 
 #include "Si5351A_PLL.h"
+#include "asserts.h"
 
 int main(void)
 {
@@ -56,5 +57,7 @@ void si5351aSetFrequency(uint32_t frequency)
 
 									// Finally switch on the CLK0 output (0x4F)
 									// and set the MultiSynth0 input to be PLL A
-	write8(SI5351_REGISTER_16_CLK0_CONTROL, 0xF); // 00001111
+	write8(SI5351_REGISTER_16_CLK0_CONTROL, 0x4F); // 00001111
+	
+	enableOutputs(true);
 }

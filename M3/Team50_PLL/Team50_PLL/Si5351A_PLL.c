@@ -20,7 +20,7 @@ volatile uint32_t Si5351_pllb_freq = 0;
 volatile uint8_t Si5351_lastRdivValue[3] = {0,0,0};
 
 // I2C commands (use your own if you'd prefer)
-static void write8(uint8_t reg, uint8_t value)
+void write8(uint8_t reg, uint8_t value)
 {
 	uint8_t data[2] = {reg,value};
 	tw_master_transmit(SI5351_ADDRESS, data, sizeof(data), false);
@@ -28,7 +28,7 @@ static void write8(uint8_t reg, uint8_t value)
 
 static void writeN(uint8_t *data, uint8_t n)
 {
-	ASSERT_STATUS(tw_master_transmit(SI5351_ADDRESS, data, sizeof(data), false));
+	tw_master_transmit(SI5351_ADDRESS, data, sizeof(data), false);
 }
 
 static void read8(uint8_t *reg, uint8_t *value)
@@ -54,21 +54,21 @@ err_t Si5351A_setup(void) {
   //   return ERROR_I2C_DEVICENOTFOUND;
 
 	/* Disable all outputs setting CLKx_DIS high */
-  ASSERT_STATUS(write8(SI5351_REGISTER_3_OUTPUT_ENABLE_CONTROL, 0xFF));
+  write8(SI5351_REGISTER_3_OUTPUT_ENABLE_CONTROL, 0xFF);
 
   /* Power down all output drivers */
-  ASSERT_STATUS(write8(SI5351_REGISTER_16_CLK0_CONTROL, 0x80));
-  ASSERT_STATUS(write8(SI5351_REGISTER_17_CLK1_CONTROL, 0x80));
-  ASSERT_STATUS(write8(SI5351_REGISTER_18_CLK2_CONTROL, 0x80));
-  ASSERT_STATUS(write8(SI5351_REGISTER_19_CLK3_CONTROL, 0x80));
-  ASSERT_STATUS(write8(SI5351_REGISTER_20_CLK4_CONTROL, 0x80));
-  ASSERT_STATUS(write8(SI5351_REGISTER_21_CLK5_CONTROL, 0x80));
-  ASSERT_STATUS(write8(SI5351_REGISTER_22_CLK6_CONTROL, 0x80));
-  ASSERT_STATUS(write8(SI5351_REGISTER_23_CLK7_CONTROL, 0x80));
+  write8(SI5351_REGISTER_16_CLK0_CONTROL, 0x80);
+  write8(SI5351_REGISTER_17_CLK1_CONTROL, 0x80);
+  write8(SI5351_REGISTER_18_CLK2_CONTROL, 0x80);
+  write8(SI5351_REGISTER_19_CLK3_CONTROL, 0x80);
+  write8(SI5351_REGISTER_20_CLK4_CONTROL, 0x80);
+  write8(SI5351_REGISTER_21_CLK5_CONTROL, 0x80);
+  write8(SI5351_REGISTER_22_CLK6_CONTROL, 0x80);
+  write8(SI5351_REGISTER_23_CLK7_CONTROL, 0x80);
 
 	/* Set the load capacitance for the XTAL */
-  ASSERT_STATUS(write8(SI5351_REGISTER_183_CRYSTAL_INTERNAL_LOAD_CAPACITANCE,
-                       Si5351_crystalLoad));
+  write8(SI5351_REGISTER_183_CRYSTAL_INTERNAL_LOAD_CAPACITANCE,
+                       Si5351_crystalLoad);
 
   /* Reset the PLL config fields just in case we call init again */
   Si5351_plla_configured = false;
@@ -178,18 +178,18 @@ err_t setupPLL(si5351PLL_t pll, uint8_t mult, uint32_t num,
   uint8_t baseaddr = (pll == SI5351_PLL_A ? 26 : 34);
 
   /* The datasheet is a nightmare of typos and inconsistencies here! */
-  ASSERT_STATUS(write8(baseaddr, (P3 & 0x0000FF00) >> 8));
-  ASSERT_STATUS(write8(baseaddr + 1, (P3 & 0x000000FF)));
-  ASSERT_STATUS(write8(baseaddr + 2, (P1 & 0x00030000) >> 16));
-  ASSERT_STATUS(write8(baseaddr + 3, (P1 & 0x0000FF00) >> 8));
-  ASSERT_STATUS(write8(baseaddr + 4, (P1 & 0x000000FF)));
-  ASSERT_STATUS(write8(baseaddr + 5,
-                       ((P3 & 0x000F0000) >> 12) | ((P2 & 0x000F0000) >> 16)));
-  ASSERT_STATUS(write8(baseaddr + 6, (P2 & 0x0000FF00) >> 8));
-  ASSERT_STATUS(write8(baseaddr + 7, (P2 & 0x000000FF)));
+  write8(baseaddr, (P3 & 0x0000FF00) >> 8);
+  write8(baseaddr + 1, (P3 & 0x000000FF));
+  write8(baseaddr + 2, (P1 & 0x00030000) >> 16);
+  write8(baseaddr + 3, (P1 & 0x0000FF00) >> 8);
+  write8(baseaddr + 4, (P1 & 0x000000FF));
+  write8(baseaddr + 5,
+                       ((P3 & 0x000F0000) >> 12) | ((P2 & 0x000F0000) >> 16));
+  write8(baseaddr + 6, (P2 & 0x0000FF00) >> 8);
+  write8(baseaddr + 7, (P2 & 0x000000FF));
 
   /* Reset both PLLs */
-  ASSERT_STATUS(write8(SI5351_REGISTER_177_PLL_RESET, (1 << 7) | (1 << 5)));
+  write8(SI5351_REGISTER_177_PLL_RESET, (1 << 7) | (1 << 5));
 
   /* Store the frequency settings for use with the Multisynth helper */
   if (pll == SI5351_PLL_A) {
@@ -346,13 +346,13 @@ err_t setupMultisynth(uint8_t output, si5351PLL_t pllSource,
    sendBuffer[0] = baseaddr;
    sendBuffer[1] = (P3 & 0xFF00) >> 8;
    sendBuffer[2] = P3 & 0xFF;
-   sendBuffer[3] = ((P1 & 0x30000) >> 16) | lastRdivValue[output];
+   sendBuffer[3] = ((P1 & 0x30000) >> 16) | div;
    sendBuffer[4] = (P1 & 0xFF00) >> 8;
    sendBuffer[5] = P1 & 0xFF;
    sendBuffer[6] = ((P3 & 0xF0000) >> 12) | ((P2 & 0xF0000) >> 16);
    sendBuffer[7] = (P2 & 0xFF00) >> 8;
    sendBuffer[8] = P2 & 0xFF;
-   ASSERT_STATUS(writeN(sendBuffer, 9));
+   writeN(sendBuffer, 9);
 
    /* Configure the clk control and enable the output */
    /* TODO: Check if the clk control byte needs to be updated. */
@@ -364,13 +364,13 @@ err_t setupMultisynth(uint8_t output, si5351PLL_t pllSource,
      clkControlReg |= (1 << 6); /* Integer mode */
    switch (output) {
    case 0:
-     ASSERT_STATUS(write8(SI5351_REGISTER_16_CLK0_CONTROL, clkControlReg));
+     write8(SI5351_REGISTER_16_CLK0_CONTROL, clkControlReg);
      break;
    case 1:
-     ASSERT_STATUS(write8(SI5351_REGISTER_17_CLK1_CONTROL, clkControlReg));
+     write8(SI5351_REGISTER_17_CLK1_CONTROL, clkControlReg);
      break;
    case 2:
-     ASSERT_STATUS(write8(SI5351_REGISTER_18_CLK2_CONTROL, clkControlReg));
+     write8(SI5351_REGISTER_18_CLK2_CONTROL, clkControlReg);
      break;
    }
 
@@ -387,8 +387,8 @@ err_t enableOutputs(bool enabled) {
   ASSERT(Si5351_initialised, ERROR_DEVICENOTINITIALISED);
 
   /* Enabled desired outputs (see Register 3) */
-  ASSERT_STATUS(
-      write8(SI5351_REGISTER_3_OUTPUT_ENABLE_CONTROL, enabled ? 0x00 : 0xFF));
+  
+      write8(SI5351_REGISTER_3_OUTPUT_ENABLE_CONTROL, enabled ? 0x00 : 0xFF);
 
   return ERROR_NONE;
 }

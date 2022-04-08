@@ -346,6 +346,7 @@ typedef enum {
 } err_t;
 
 // Function Prototypes
+void write8(uint8_t reg, uint8_t value);
 err_t Si5351A_setup(void);
 err_t setupPLLInt(si5351PLL_t pll, uint8_t mult);
 err_t setupPLL(si5351PLL_t pll, uint8_t mult, uint32_t num,uint32_t denom);
