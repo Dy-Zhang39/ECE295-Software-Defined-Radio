@@ -10,11 +10,14 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+int key_row = 0;
+int key_col = 0;
+
 int main(void)
 {
     /* Replace with your application code */
 	DDRB = 0xf0; //Set ports B 4-7 as output, 0-3 as input
-	DDRD = 0x3c; //Set port D5 as output for test LED
+	DDRD = 0x3c; //Set port D as output for test LED
 	
 	PCICR = 0x2; //Setting PCICR (ATMEGA's GIC) to enable interrupts from PCINT1
 	PCMSK1 = 0xf; //Setting interrupt masks of pins PCINT8-11 to 1
@@ -26,21 +29,72 @@ int main(void)
     {
 		PB_value = PINB;
 		PD_value = PIND;
-		PORTB = 0xf0;
+		PORTB = 0xf0; //ToDo will this matter if PORTB[3:0] are set to input?
+		// ToDo Store and restore SREG
     }
 }
 
 ISR(PCINT1_vect){
 	_delay_ms(100);
-	if(PINB & 0x1 == 1){
-		PORTD = 0x3c;
+	/*if ((PINB & 0xf) != 0){
+		PORTD = (PORTD & 0xc3) | 0x3c;
 	}
 	else {
 		PORTD = (PORTD & 0xc3) | 0;
+	}*/
+	
+	if((PINB & 0xf) != 0){ //A key is pressed
+		//Obtain row of key press
+		key_row = (PINB & 0xf);
+		if(key_row == 0x1){
+			key_row = 0x0;
+		}
+		else if(key_row == 0x2){
+			key_row = 0x1;
+		}
+		else if(key_row == 0x4){
+			key_row = 0x2;
+		}
+		else if(key_row == 0x8){
+			key_row = 0x3;
+		}
+
+		//Swap input and output
+		DDRB = 0xf;
+		PORTB = 0xf;
+
+		_delay_ms(100);
+		//Obtain column of key press
+		if((PINB & 0xf0) != 0){
+			key_col = (PINB & 0xf0) >> 0x4;
+			if(key_col == 0x1){
+				key_col = 0x0;
+			}
+			else if(key_col == 0x2){
+				key_col = 0x1;
+			}
+			else if(key_col == 0x4){
+				key_col = 0x2;
+			}
+			else if(key_col == 0x8){
+				key_col = 0x3;
+			}
+		
+			//Display key_row and key_col to test LEDs
+			PORTD = ((PORTD & 0xc3) | (key_col << 0x4)) | (key_row << 0x2); // ToDo Difference between PIND and PORTD? Is this the right method?
+		}
+		else {
+			PORTD = (PORTD & 0xc3) | 0;
+		}
+		
+		//Swap input and output back
+		DDRB = 0xf0;
+		PORTB |= 0xf0;
+	}
+	else{
+		PORTD = (PORTD & 0xc3) | 0;
 	}
 }
-
-
 
 
 
