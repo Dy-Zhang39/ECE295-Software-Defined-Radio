@@ -13,6 +13,8 @@
 #include <stdio.h>
 
 #include "i2c.h"
+#include "i2c_2.h"
+#include "si5351.h"
 #include "screen_cmds.h"
 
 #include <avr/interrupt.h>
@@ -201,7 +203,7 @@ int main(void)
 				}
 				else {
 					char freq_disp[99] = "FREQ: ";
-					char freq_val[99];
+					char freq_val[99] = ;
 					itoa(freq, freq_val, 10);
 					strcat(freq_disp, freq_val);
 					strcat(freq_disp, "M");
